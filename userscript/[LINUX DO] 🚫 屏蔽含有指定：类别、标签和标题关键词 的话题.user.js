@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name         [LINUX DO] 🚫 屏蔽含有指定：类别、标签和标题关键词 的话题 [20260119] v2.1.0
+// @name         [LINUX DO] 🚫 屏蔽含有指定：类别、标签和标题关键词 的话题 [20260125] v1.0.0
 // @namespace    https://github.com/0-V-linuxdo/LINUX-DO-Topic-Blocker
 // @description  功能：按标题/类别/标签关键词与正则在话题列表隐藏内容；搜索页提供屏蔽/必含/正则过滤器并按搜索词保存；悬浮屏蔽按钮与选择器/确认弹窗快速添加关键词；支持临时显示被屏蔽项、配置导入导出、即时生效。
 //
-// @version      [20260119] v2.1.0
-// @update-log   [20260119] v2.1.0 屏蔽选择器优化标题关键词快速添加/取消、文案字号与对齐层级调整；确认弹窗精简为纯文本并在打开时隐藏底层弹窗。
+// @version      [20260125] v1.0.0
+// @update-log   [20260125] v1.0.0 降低悬浮按钮层级，避免通知栏遮挡。
 //
 // @match        https://linux.do/*
 //
@@ -459,7 +459,7 @@
               position: fixed !important;
               top: 193px !important;
               right: 16px !important;
-              z-index: 9997 !important;
+              z-index: 900 !important;
               pointer-events: auto !important;
               width: var(--linuxdo-filter-fab-size);
               height: var(--linuxdo-filter-fab-size);
@@ -981,7 +981,7 @@
                 position: fixed;
                 top: 140px;
                 right: 16px;
-                z-index: 9997;
+                z-index: 900;
                 pointer-events: auto;
             }
             #${BLOCK_TOGGLE_WRAPPER_ID} .block-toggle-button {
@@ -4102,7 +4102,8 @@
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             z-index: 9999;
-            min-width: 500px;
+            width: calc(100vw - 24px);
+            max-width: 760px;
             max-height: 80vh;
             overflow: hidden;
             display: flex;
@@ -4110,6 +4111,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             padding: 0 20px 20px;
             color: #333;
+            box-sizing: border-box;
         }
         #settingsDialog h2 {
             margin: 0 0 20px 0;
