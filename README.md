@@ -7,11 +7,13 @@
 
 脚本只在浏览器前端隐藏内容，不会删除站点原始内容，也不依赖站点登录接口。
 
+如果只是安装使用，请使用下面的 `main` 分支 Raw 链接；完整开发源码放在 `dev` 分支。
+
 ## LINUX DO 屏蔽脚本
 
 安装：
 
-打开 [linux-do-topic-blocker.user.js](https://raw.githubusercontent.com/0-V-linuxdo/LINUX-DO-Topic-Blocker/dev/dist/linux-do-topic-blocker.user.js)，在脚本管理器中确认安装。
+打开 [linux-do-topic-blocker.user.js](https://raw.githubusercontent.com/0-V-linuxdo/LINUX-DO-Topic-Blocker/main/userscript/linux-do-topic-blocker.user.js)，在脚本管理器中确认安装。
 
 适用页面：
 
@@ -54,7 +56,7 @@
 
 安装：
 
-打开 [ldcstore-content-blocker.user.js](https://raw.githubusercontent.com/0-V-linuxdo/LINUX-DO-Topic-Blocker/dev/dist/ldcstore-content-blocker.user.js)，在脚本管理器中确认安装。
+打开 [ldcstore-content-blocker.user.js](https://raw.githubusercontent.com/0-V-linuxdo/LINUX-DO-Topic-Blocker/main/userscript/ldcstore-content-blocker.user.js)，在脚本管理器中确认安装。
 
 适用页面：
 
