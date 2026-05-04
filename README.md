@@ -1,87 +1,102 @@
-# LINUX DO Topic Blocker
+# LINUX DO / LD士多 屏蔽脚本
 
-`LINUX DO Topic Blocker` 是一组 Userscript 内容屏蔽脚本，用来在 `linux.do` 和 `ldcstore.com` 前端隐藏不想看到的话题、商品、小店、求购与热榜内容。
+这个仓库里有两个独立的浏览器 Userscript。请按你要使用的网站选择安装，不需要两个都装。
 
-项目当前开发文件放在 `dev` 分支；`dist/` 中的 `.user.js` 是可直接安装的构建产物。
+- LINUX DO 屏蔽脚本：用于 `https://linux.do/`
+- LD士多屏蔽脚本：用于 `https://ldcstore.com/`
 
-## 快速安装
+脚本只在浏览器前端隐藏内容，不会删除站点原始内容，也不依赖站点登录接口。
 
-先安装脚本管理器，推荐使用 `Violentmonkey` 或 `Tampermonkey`。
+## LINUX DO 屏蔽脚本
 
-LINUX DO：
+安装：
 
-1. 打开 [linux-do-topic-blocker.user.js](https://raw.githubusercontent.com/0-V-linuxdo/LINUX-DO-Topic-Blocker/dev/dist/linux-do-topic-blocker.user.js)。
-2. 在脚本管理器弹出的安装页中确认安装。
-3. 访问 `https://linux.do/`，脚本会自动生效。
+打开 [linux-do-topic-blocker.user.js](https://raw.githubusercontent.com/0-V-linuxdo/LINUX-DO-Topic-Blocker/dev/dist/linux-do-topic-blocker.user.js)，在脚本管理器中确认安装。
 
-LD士多：
+适用页面：
 
-1. 打开 [ldcstore-content-blocker.user.js](https://raw.githubusercontent.com/0-V-linuxdo/LINUX-DO-Topic-Blocker/dev/dist/ldcstore-content-blocker.user.js)。
-2. 在脚本管理器弹出的安装页中确认安装。
-3. 访问 `https://ldcstore.com/`，脚本会自动生效。
+- LINUX DO 话题列表页
+- LINUX DO 搜索结果页
 
-## 功能
+主要功能：
 
-- 按标题关键词、类别、标签隐藏 LINUX DO 话题列表内容。
-- 按名称关键词、分类或状态、卖家或标签隐藏 LD士多内容。
-- 支持为标题、类别、标签分别添加 JavaScript 正则规则。
-- 搜索页提供悬浮过滤器，支持“屏蔽 / 必含 / 正则”，并按搜索词分别保存。
-- 设置保存后即时生效，不需要手动刷新页面。
-- 支持配置导入和导出，便于跨浏览器或跨设备同步。
-- 仅做前端隐藏，不依赖登录接口，也不会删除站点原始内容。
-- 保留 `window.triggerContentFilter`，兼容外部总结脚本联动。
+- 在话题列表中，按标题关键词、类别、标签隐藏话题。
+- 支持标题、类别、标签三类正则规则。
+- 搜索页右上角提供独立过滤器，支持 `屏蔽`、`必含`、`正则`，并按搜索词分别保存。
+- 鼠标移到话题或搜索结果上时，可用悬浮按钮快速添加屏蔽规则。
+- 已被屏蔽的内容可以临时显示，并可查看屏蔽原因、选择取消某条规则。
+- 设置保存后立即生效，不需要刷新页面。
+- 支持配置导入和导出。
+- 设置中提供“启用总结脚本联动”开关，用于兼容外部总结按钮脚本。
 
-## 使用说明
+使用：
 
-在脚本管理器菜单中打开 `⚙️ 屏蔽设置`。
+1. 安装 `Violentmonkey` 或 `Tampermonkey`。
+2. 安装上面的 LINUX DO 脚本。
+3. 打开 `https://linux.do/`。
+4. 在脚本管理器菜单中点击 `⚙️ 屏蔽设置`。
 
-常规规则：
+规则说明：
 
-- 标题关键词：逗号分隔，按包含匹配处理。
-- 类别：逗号分隔，按完全匹配处理。
-- 标签：逗号分隔，按完全匹配处理。
+- 标题关键词：逗号分隔，按包含匹配。
+- 类别：逗号分隔，按完全匹配。
+- 标签：逗号分隔，按完全匹配。
+- 正则表达式：在对应的正则页中新增规则，输入表达式主体即可，不需要写成 `/.../`。
 
-高级正则：
+搜索页说明：
 
-- 在标题、类别、标签各自的正则页中添加规则。
-- 输入 JavaScript 正则表达式主体，不需要写成 `/.../`。
-- 无效正则会提示错误；有效规则会保存并立即参与过滤。
+- `屏蔽`：命中这些词的搜索结果会隐藏。
+- `必含`：搜索结果至少要命中其中一个词才显示。
+- `正则`：每行一个 JavaScript 正则表达式。
+- 每个搜索词都有自己的过滤设置，切换搜索词后会自动切换配置。
 
-搜索页过滤：
+## LD士多屏蔽脚本
 
-- 在 `https://linux.do/search?q=...` 和 LD士多搜索页中使用右上角悬浮过滤器。
-- `屏蔽` 表示黑名单关键词。
-- `必含` 表示白名单关键词，结果至少命中一个才会显示。
-- `正则` 表示每行一个 JavaScript 正则表达式。
+安装：
 
-## 配置导入导出
+打开 [ldcstore-content-blocker.user.js](https://raw.githubusercontent.com/0-V-linuxdo/LINUX-DO-Topic-Blocker/dev/dist/ldcstore-content-blocker.user.js)，在脚本管理器中确认安装。
 
-设置弹窗提供同步功能：
+适用页面：
 
-- 导出：下载当前站点的 JSON 配置文件。
-- 导入：选择之前导出的 JSON 文件并覆盖当前配置。
+- LD士多首页商品、小店、求购、热榜
+- LD士多搜索结果页
+- LD士多分类页商品列表
 
-导出的配置包含 `schemaVersion`，核心结构如下：
+主要功能：
 
-```json
-{
-  "schemaVersion": 1,
-  "blockedTitles": [],
-  "blockedCategories": [],
-  "blockedTags": [],
-  "titleRegexList": [],
-  "categoryRegexList": [],
-  "tagRegexList": [],
-  "searchFilterMap": {},
-  "summaryScriptEnabled": true
-}
-```
+- 按名称关键词隐藏商品、小店、求购或热榜内容。
+- 按分类或状态隐藏内容。
+- 按卖家、店主或标签隐藏内容。
+- 支持名称、分类/状态、卖家/标签三类正则规则。
+- 搜索结果页会同时使用常规屏蔽规则和搜索页过滤器。
+- 搜索页过滤器支持 `屏蔽`、`必含`、`正则`，并按搜索词分别保存。
+- 鼠标移到内容卡片上时，可用悬浮按钮快速添加屏蔽规则。
+- 已被屏蔽的内容可以临时显示，并可查看屏蔽原因、选择取消某条规则。
+- 设置保存后立即生效，不需要刷新页面。
+- 支持配置导入和导出。
 
-兼容说明：
+使用：
 
-- 旧版本的 `blockedTtags` 会在读取或导入时迁移为 `blockedTags`。
-- 没有 `schemaVersion` 的旧备份仍可导入。
-- 新配置写回时只输出当前字段。
+1. 安装 `Violentmonkey` 或 `Tampermonkey`。
+2. 安装上面的 LD士多脚本。
+3. 打开 `https://ldcstore.com/`。
+4. 在脚本管理器菜单中点击 `⚙️ 屏蔽设置`。
+
+规则说明：
+
+- 标题关键词：这里对应商品名、店铺名、求购标题或热榜名称；逗号分隔，按包含匹配。
+- 类别：这里对应商品分类、小店标签组合、求购状态或热榜分类；逗号分隔，按完全匹配。
+- 标签：这里对应卖家、店主、商品标签或内容元信息；逗号分隔，按完全匹配。
+- 正则表达式：在对应的正则页中新增规则，输入表达式主体即可，不需要写成 `/.../`。
+
+## 配置同步
+
+两个脚本的配置互相独立。你可以在设置弹窗的 `同步` 页中：
+
+- 导出当前脚本配置为 JSON 文件。
+- 导入之前导出的 JSON 文件。
+
+导入会覆盖当前脚本的相关配置。旧版本配置会自动迁移到当前格式。
 
 ## 开发
 
@@ -99,23 +114,17 @@ npm run build
 npm test
 ```
 
+构建产物：
+
+- `dist/linux-do-topic-blocker.user.js`
+- `dist/ldcstore-content-blocker.user.js`
+
 说明：
 
-- `npm run dev` 使用 Rollup watch 模式持续构建。
-- `npm run build` 输出 `dist/linux-do-topic-blocker.user.js` 和 `dist/ldcstore-content-blocker.user.js`。
-- `npm test` 使用 Node.js 内置测试运行器。
-- `legacy/` 中的旧脚本是历史归档，不会被构建命令覆盖。
-
-## 项目结构
-
-```text
-src/        源码，按核心逻辑、站点 profile、功能模块和平台适配拆分
-dist/       构建产物，也是正式安装入口
-test/       Node.js 测试
-legacy/     历史脚本归档
-reference/  参考脚本和素材
-scripts/    辅助脚本
-```
+- `src/` 是源码。
+- `dist/` 是可安装脚本。
+- `test/` 是测试。
+- `legacy/` 是历史脚本归档，不会被构建命令覆盖。
 
 ## License
 
