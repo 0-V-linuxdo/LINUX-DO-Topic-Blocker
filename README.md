@@ -8,7 +8,7 @@
 
 安装：
 
-打开 [linux-do-topic-blocker.user.js](https://raw.githubusercontent.com/0-V-linuxdo/LINUX-DO-Topic-Blocker/main/dist/linux-do-topic-blocker.user.js)，在脚本管理器中确认安装。
+打开 [linux-do-topic-blocker.user.js](https://raw.githubusercontent.com/0-V-linuxdo/LINUX-DO-Topic-Blocker/main/userscript/linux-do-topic-blocker.user.js)，在脚本管理器中确认安装。
 
 适用页面：
 
@@ -51,7 +51,7 @@
 
 安装：
 
-打开 [ldcstore-content-blocker.user.js](https://raw.githubusercontent.com/0-V-linuxdo/LINUX-DO-Topic-Blocker/main/dist/ldcstore-content-blocker.user.js)，在脚本管理器中确认安装。
+打开 [ldcstore-content-blocker.user.js](https://raw.githubusercontent.com/0-V-linuxdo/LINUX-DO-Topic-Blocker/main/userscript/ldcstore-content-blocker.user.js)，在脚本管理器中确认安装。
 
 适用页面：
 
@@ -97,9 +97,8 @@
 
 ## 文件说明
 
-- `dist/linux-do-topic-blocker.user.js`：LINUX DO 发布脚本。
-- `dist/ldcstore-content-blocker.user.js`：LD士多发布脚本。
-- `userscript/[LINUX DO] ...user.js`：兼容旧入口，内容与 LINUX DO 发布脚本保持一致。
+- `userscript/linux-do-topic-blocker.user.js`：LINUX DO 发布脚本。
+- `userscript/ldcstore-content-blocker.user.js`：LD士多发布脚本。
 
 ## License
 
