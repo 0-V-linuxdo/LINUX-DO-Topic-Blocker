@@ -1,19 +1,19 @@
 // ==UserScript==
-// @name         [LINUX DO] 🚫 屏蔽含有指定：类别、标签和标题关键词 的话题 [20260504] v1.0.4
-// @namespace    https://github.com/0-V-linuxdo/LINUX-DO-Topic-Blocker
-// @description  功能：按标题/类别/标签关键词与正则在话题列表隐藏内容；搜索页提供屏蔽/必含/正则过滤器并按搜索词保存；悬浮屏蔽按钮与选择器/确认弹窗快速添加关键词；支持临时显示被屏蔽项、配置导入导出、即时生效。
+// @name         [LD士多] 🚫 屏蔽含有指定：类别、标签和标题关键词 的内容 [20260504] v1.0.5
+// @namespace    https://github.com/0-V-linuxdo/LINUX-DO-Topic-Blocker/ldcstore
+// @description  功能：在 LD士多 按标题/类别/标签关键词与正则隐藏商品、小店、求购与热榜内容；搜索页提供按搜索词保存的屏蔽/必含/正则过滤器；支持悬浮屏蔽按钮、临时显示被屏蔽项、配置导入导出、即时生效。
 //
-// @version      [20260504] v1.0.4
-// @update-log   [20260504] v1.0.4 修复屏蔽选择器勾选项受站点全局 input 样式影响、取消勾选不稳定，以及取消全部选项后仍兜底屏蔽整条标题的问题。
+// @version      [20260504] v1.0.5
+// @update-log   [20260504] v1.0.5 修复首页 section tab 切换后隐藏 tab 卡片被计入屏蔽数量的问题，并适配 SPA replaceState/pushState 导航刷新。
 //
-// @match        https://linux.do/*
+// @match        https://ldcstore.com/*
 //
 // @grant        GM_setValue
 // @grant        GM_getValue
 // @grant        GM_registerMenuCommand
 // @grant        GM_addStyle
 //
-// @icon         data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGRlZnM+CiAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ibGlnaHRTYWJlckdyYWRpZW50IiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CiAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjM2IwMDAwIiBzdG9wLW9wYWNpdHk9IjAuNyIvPgogICAgICAgICAgPHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiM4YjAwMDAiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjM2IwMDAwIiBzdG9wLW9wYWNpdHk9IjAuNyIvPgogICAgICA8L2xpbmVhckdyYWRpZW50PgoKICAgICAgPGxpbmVhckdyYWRpZW50IGlkPSJtZXRhbFRleHR1cmUiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjAlIj4KICAgICAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMxYTFhMWEiLz4KICAgICAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjMmMyYzJjIi8+CiAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxYTFhMWEiLz4KICAgICAgPC9saW5lYXJHcmFkaWVudD4KCiAgICAgIDxmaWx0ZXIgaWQ9ImxpZ2h0c2FiZXJHbG93Ij4KICAgICAgICAgIDxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjUiIC8+CiAgICAgICAgICA8ZmVDb2xvck1hdHJpeCB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMSAwIDAgMCAwLjYKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMCAxIDAgMCAwCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDAgMCAxIDAgMAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAwIDAgMCAwLjcgMCIvPgogICAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CgogIDxjbGlwUGF0aCBpZD0iYSI+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNDciLz48L2NsaXBQYXRoPgogIDxjaXJjbGUgZmlsbD0iI2YwZjBmMCIgY3g9IjYwIiBjeT0iNjAiIHI9IjUwIi8+CiAgPHJlY3QgZmlsbD0iIzFjMWMxZSIgY2xpcC1wYXRoPSJ1cmwoI2EpIiB4PSIxMCIgeT0iMTAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMzAiLz4KICA8cmVjdCBmaWxsPSIjZjBmMGYwIiBjbGlwLXBhdGg9InVybCgjYSkiIHg9IjEwIiB5PSI0MCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI0MCIvPgogIDxyZWN0IGZpbGw9IiNmZmIwMDMiIGNsaXAtcGF0aD0idXJsKCNhKSIgeD0iMTAiIHk9IjgwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjMwIi8+CgogIDxnIHRyYW5zZm9ybT0icm90YXRlKDQ1IDYwIDYwKSI+CiAgICAgIDxnPgogICAgICAgICAgPHBhdGggCiAgICAgICAgICAgICAgZD0iTTU3LDE1IAogICAgICAgICAgICAgICBMNjMsMTUgCiAgICAgICAgICAgICAgIEw2MywzMCAKICAgICAgICAgICAgICAgUTYxLDMxIDU5LDMwIAogICAgICAgICAgICAgICBMNTcsMzAgWiIgCiAgICAgICAgICAgICAgZmlsbD0idXJsKCNtZXRhbFRleHR1cmUpIiAKICAgICAgICAgICAgICBzdHJva2U9IiMwMDAiIAogICAgICAgICAgICAgIHN0cm9rZS13aWR0aD0iMC41Ii8+CiAgICAgICAgICAKICAgICAgICAgIDxwYXRoIAogICAgICAgICAgICAgIGQ9Ik01Ni41LDE1LjUgTDU3LjUsMTUuNSBMNTcuNSwyOS41IEw1Ni41LDI5LjUgWiIgCiAgICAgICAgICAgICAgZmlsbD0iIzExMSIvPgogICAgICAgICAgPHBhdGggCiAgICAgICAgICAgICAgZD0iTTYzLjUsMTUuNSBMNjIuNSwxNS41IEw2Mi41LDI5LjUgTDYzLjUsMjkuNSBaIiAKICAgICAgICAgICAgICBmaWxsPSIjMTExIi8+CiAgICAgICAgICAKICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDYwIDIyKSI+CiAgICAgICAgICAgICAgPGNpcmNsZSAKICAgICAgICAgICAgICAgICAgY3g9IjAiIAogICAgICAgICAgICAgICAgICBjeT0iLTIiIAogICAgICAgICAgICAgICAgICByPSIxLjUiIAogICAgICAgICAgICAgICAgICBmaWxsPSIjMjIyIiAKICAgICAgICAgICAgICAgICAgc3Ryb2tlPSIjMDAwIiAKICAgICAgICAgICAgICAgICAgc3Ryb2tlLXdpZHRoPSIwLjMiLz4KICAgICAgICAgICAgICAKICAgICAgICAgICAgICA8Y2lyY2xlIAogICAgICAgICAgICAgICAgICBjeD0iLTIiIAogICAgICAgICAgICAgICAgICBjeT0iMCIgCiAgICAgICAgICAgICAgICAgIHI9IjAuOCIgCiAgICAgICAgICAgICAgICAgIGZpbGw9IiMzMzMiLz4KICAgICAgICAgICAgICA8Y2lyY2xlIAogICAgICAgICAgICAgICAgICBjeD0iMiIgCiAgICAgICAgICAgICAgICAgIGN5PSIwIiAKICAgICAgICAgICAgICAgICAgcj0iMC44IiAKICAgICAgICAgICAgICAgICAgZmlsbD0iIzMzMyIvPgogICAgICAgICAgPC9nPgogICAgICAgICAgCiAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg2MCAzMikiPgogICAgICAgICAgICAgIDxyZWN0IAogICAgICAgICAgICAgICAgICB4PSItMy41IiAKICAgICAgICAgICAgICAgICAgeT0iMCIgCiAgICAgICAgICAgICAgICAgIHdpZHRoPSI3IiAKICAgICAgICAgICAgICAgICAgaGVpZ2h0PSIyIiAKICAgICAgICAgICAgICAgICAgZmlsbD0iIzFjMWMxYyIgCiAgICAgICAgICAgICAgICAgIHJ4PSIwLjUiIAogICAgICAgICAgICAgICAgICByeT0iMC41Ii8+CiAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgPGNpcmNsZSAKICAgICAgICAgICAgICAgICAgY3g9Ii0yIiAKICAgICAgICAgICAgICAgICAgY3k9IjEiIAogICAgICAgICAgICAgICAgICByPSIwLjUiIAogICAgICAgICAgICAgICAgICBmaWxsPSIjNDQ0Ii8+CiAgICAgICAgICAgICAgPGNpcmNsZSAKICAgICAgICAgICAgICAgICAgY3g9IjIiIAogICAgICAgICAgICAgICAgICBjeT0iMSIgCiAgICAgICAgICAgICAgICAgIHI9IjAuNSIgCiAgICAgICAgICAgICAgICAgIGZpbGw9IiM0NDQiLz4KICAgICAgICAgIDwvZz4KCiAgICAgICAgICA8Zz4KICAgICAgICAgICAgICA8cmVjdCAKICAgICAgICAgICAgICAgICAgeD0iNTkiIAogICAgICAgICAgICAgICAgICB5PSIxMyIgCiAgICAgICAgICAgICAgICAgIHdpZHRoPSIyIiAKICAgICAgICAgICAgICAgICAgaGVpZ2h0PSIxIiAKICAgICAgICAgICAgICAgICAgZmlsbD0iIzExMSIgCiAgICAgICAgICAgICAgICAgIHJ4PSIwLjMiIAogICAgICAgICAgICAgICAgICByeT0iMC4zIi8+CiAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgPHJlY3QgCiAgICAgICAgICAgICAgICAgIHg9IjU5IiAKICAgICAgICAgICAgICAgICAgeT0iMzQiIAogICAgICAgICAgICAgICAgICB3aWR0aD0iMiIgCiAgICAgICAgICAgICAgICAgIGhlaWdodD0iMSIgCiAgICAgICAgICAgICAgICAgIGZpbGw9IiMyMjIiIAogICAgICAgICAgICAgICAgICByeD0iMC4zIiAKICAgICAgICAgICAgICAgICAgcnk9IjAuMyIvPgogICAgICAgICAgPC9nPgogICAgICA8L2c+CgogICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIDM1KSI+CiAgICAgICAgICA8cGF0aCAKICAgICAgICAgICAgICBkPSJNNTUsMCBMNjUsMCBMNjUsNjUgTDU1LDY1IFoiIAogICAgICAgICAgICAgIGZpbGw9InVybCgjbGlnaHRTYWJlckdyYWRpZW50KSIgCiAgICAgICAgICAgICAgZmlsdGVyPSJ1cmwoI2xpZ2h0c2FiZXJHbG93KSI+CiAgICAgICAgICAgICAgPGFuaW1hdGUgCiAgICAgICAgICAgICAgICAgIGF0dHJpYnV0ZU5hbWU9ImQiIAogICAgICAgICAgICAgICAgICB2YWx1ZXM9Ik01NSwwIEw2NSwwIEw2NSw2NSBMNTUsNjUgWjsKICAgICAgICAgICAgICAgICAgICAgICAgICBNNTMsMCBMNjcsMCBMNjcsNjUgTDUzLDY1IFo7CiAgICAgICAgICAgICAgICAgICAgICAgICAgTTU1LDAgTDY1LDAgTDY1LDY1IEw1NSw2NSBaIiAKICAgICAgICAgICAgICAgICAgZHVyPSIycyIgCiAgICAgICAgICAgICAgICAgIHJlcGVhdENvdW50PSJpbmRlZmluaXRlIi8+CiAgICAgICAgICA8L3BhdGg+CiAgICAgIDwvZz4KICA8L2c+CgogIDxjaXJjbGUgCiAgICAgIGN4PSI2MCIgCiAgICAgIGN5PSI2MCIgCiAgICAgIHI9IjU1IiAKICAgICAgZmlsbD0ibm9uZSIgCiAgICAgIHN0cm9rZT0iI2ZmMDAwMCIgCiAgICAgIHN0cm9rZS13aWR0aD0iNiIgCiAgICAgIHN0cm9rZS1kYXNoYXJyYXk9IjE1IDEwIj4KICAgICAgPGFuaW1hdGUgCiAgICAgICAgICBhdHRyaWJ1dGVOYW1lPSJzdHJva2UtZGFzaG9mZnNldCIgCiAgICAgICAgICB2YWx1ZXM9IjI1OzA7LTI1IiAKICAgICAgICAgIGR1cj0iMnMiIAogICAgICAgICAgcmVwZWF0Q291bnQ9ImluZGVmaW5pdGUiLz4KICA8L2NpcmNsZT4KPC9zdmc+
+// @icon         data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZmF2LWdyYWQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRkY2QjZCIiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI0VGMzMzMyIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjQjkxQzFDIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxmaWx0ZXIgaWQ9Imdsb3ciIHg9Ii01MCUiIHk9Ii01MCUiIHdpZHRoPSIyMDAlIiBoZWlnaHQ9IjIwMCUiPgogICAgICA8ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSIyIiByZXN1bHQ9ImJsdXIiIC8+CiAgICAgIDxmZU1lcmdlPgogICAgICAgIDxmZU1lcmdlTm9kZSBpbj0iYmx1ciIgLz4KICAgICAgICA8ZmVNZXJnZU5vZGUgaW49IlNvdXJjZUdyYXBoaWMiIC8+CiAgICAgIDwvZmVNZXJnZT4KICAgIDwvZmlsdGVyPgogIDwvZGVmcz4KICA8cGF0aCBkPSJNIDMxLDQgQSAyOCwyOCAwIDEsMSAxMSw1MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2Zhdi1ncmFkKSIgc3Ryb2tlLXdpZHRoPSI4IiBzdHJva2UtbGluZWNhcD0icm91bmQiIGZpbHRlcj0idXJsKCNnbG93KSIgLz4KICA8cmVjdCB4PSIyNSIgeT0iMjYiIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgcng9IjMiIGZpbGw9InVybCgjZmF2LWdyYWQpIiB0cmFuc2Zvcm09InJvdGF0ZSg0NSAzMSAzMikiIGZpbHRlcj0idXJsKCNnbG93KSIgLz4KPC9zdmc+
 // ==/UserScript==
 (function () {
     'use strict';
@@ -5247,7 +5247,66 @@
         return Array.from(scope.querySelectorAll(selector));
     }
 
-    function getLinuxDoItemData(item) {
+    const LDCSTORE_SCRIPT_VERSION = '[20260504] v1.0.5';
+    const LDCSTORE_SCRIPT_NAME = '[LD士多] 🚫 屏蔽含有指定：类别、标签和标题关键词 的内容 [20260504] v1.0.5';
+    const LDCSTORE_SCRIPT_NAMESPACE = 'https://github.com/0-V-linuxdo/LINUX-DO-Topic-Blocker/ldcstore';
+    const LDCSTORE_SCRIPT_DESCRIPTION = '功能：在 LD士多 按标题/类别/标签关键词与正则隐藏商品、小店、求购与热榜内容；搜索页提供按搜索词保存的屏蔽/必含/正则过滤器；支持悬浮屏蔽按钮、临时显示被屏蔽项、配置导入导出、即时生效。';
+    const LDCSTORE_SCRIPT_UPDATE_LOG = '[20260504] v1.0.5 修复首页 section tab 切换后隐藏 tab 卡片被计入屏蔽数量的问题，并适配 SPA replaceState/pushState 导航刷新。';
+    const LDCSTORE_DIST_USER_SCRIPT_RELATIVE_PATH = 'dist/ldcstore-content-blocker.user.js';
+    const LDCSTORE_ITEM_SELECTOR = '.product-card, .shop-card, article.buy-card, .hotboard-product-item';
+    const LDCSTORE_HOME_SECTION_SELECTOR = '.home-page .section-content';
+
+    const LDCSTORE_STORAGE_KEYS = {
+        settings: 'ldcstore_content_blocker_settings',
+        blockedTitles: 'ldcstore_blockedNames',
+        blockedCategories: 'ldcstore_blockedCategories',
+        blockedTags: 'ldcstore_blockedSellersAndTags',
+        blockedTtags: 'ldcstore_blockedTags_legacy',
+        titleRegexList: 'ldcstore_nameRegexList',
+        categoryRegexList: 'ldcstore_categoryRegexList',
+        tagRegexList: 'ldcstore_sellerTagRegexList',
+        searchFilterMap: 'ldcstore_search_filter_keywords_map',
+        summaryScriptEnabled: 'ldcstore_summary_script_enabled'
+    };
+
+    function getShopTags(item) {
+        const tagContainer = item.querySelector('.shop-tags');
+        if (!tagContainer) return [];
+
+        const childTags = uniqueTexts(
+            Array.from(tagContainer.querySelectorAll('a, span, button, div'))
+                .filter((node) => node.children.length === 0)
+                .map((node) => node.textContent)
+        );
+
+        return childTags.length > 0 ? childTags : splitMetaText(tagContainer.textContent);
+    }
+
+    function getBuyMetaTags(item) {
+        const metaNodes = Array.from(item.querySelectorAll('.buy-card-meta span'));
+        const rawParts = metaNodes.length > 0
+            ? metaNodes.map((node) => node.textContent)
+            : splitMetaText(item.querySelector('.buy-card-meta')?.textContent || '');
+
+        return uniqueTexts(rawParts).filter((part) => {
+            const text = normalizeText(part);
+            if (!text || text === '·') return false;
+            if (/^\d+(?:\.\d+)?\s*LDC$/i.test(text)) return false;
+            if (/^密码\s*/.test(text)) return false;
+            if (/^会话\s*\d+/.test(text)) return false;
+            return true;
+        });
+    }
+
+    function getHotboardMeta(item) {
+        const parts = splitMetaText(readText(item, '.hotboard-product-meta'));
+        return {
+            categoryText: parts[0] || '',
+            tagList: parts.slice(1)
+        };
+    }
+
+    function getLdcstoreItemData(item) {
         if (!item) {
             return {
                 titleText: '',
@@ -5256,42 +5315,102 @@
             };
         }
 
-        const categoryText = readText(
-            item,
-            'div.link-bottom-line a.badge-category__wrapper span.badge-category__name, a.badge-category__wrapper span.badge-category__name, span.badge-category__name'
-        );
-        const tagList = readTextList(item, '.discourse-tags a, a.discourse-tag, .tag-name');
-        const titleText = getFirstNonEmpty(
-            readText(item, 'a.title'),
-            readText(item, 'a.topic-title, .topic-title, a.raw-topic-link')
-        );
+        if (item.matches('.shop-card')) {
+            const shopTags = getShopTags(item);
+            return {
+                titleText: readText(item, '.shop-name'),
+                categoryText: shopTags.join(', '),
+                tagList: uniqueTexts([
+                    readText(item, '.owner-name'),
+                    readText(item, '.shop-owner'),
+                    ...shopTags
+                ])
+            };
+        }
+
+        if (item.matches('article.buy-card, .buy-card')) {
+            return {
+                titleText: readText(item, '.buy-card-title'),
+                categoryText: readText(item, '.buy-status-pill'),
+                tagList: getBuyMetaTags(item)
+            };
+        }
+
+        if (item.matches('.hotboard-product-item')) {
+            const meta = getHotboardMeta(item);
+            return {
+                titleText: readText(item, '.hotboard-product-name'),
+                categoryText: meta.categoryText,
+                tagList: meta.tagList
+            };
+        }
 
         return {
-            titleText,
-            categoryText,
-            tagList
+            titleText: readText(item, '.product-name'),
+            categoryText: readText(item, '.product-category'),
+            tagList: uniqueTexts([
+                readText(item, '.seller-name'),
+                readText(item, '.product-seller'),
+                ...readTextList(item, '.type-tag')
+            ])
         };
     }
 
-    const LINUX_DO_PROFILE = Object.freeze({
-        id: 'linux-do',
-        entryFile: 'src/index.js',
-        distFile: DIST_USER_SCRIPT_RELATIVE_PATH,
+    function getLdcstoreSearchItems(root) {
+        const scopedItems = collectElements(root, '.search-page .product-card, .results-list .product-card');
+        return scopedItems.length > 0 ? scopedItems : collectElements(root, '.product-card');
+    }
+
+    function isVisibleLdcstoreHomeSection(section) {
+        if (!section) return false;
+        if (section.hidden) return false;
+        if (section.getAttribute?.('aria-hidden') === 'true') return false;
+        if (normalizeText(section.style?.display).toLowerCase() === 'none') return false;
+
+        if (typeof globalThis.getComputedStyle === 'function') {
+            try {
+                const style = globalThis.getComputedStyle(section);
+                if (style?.display === 'none' || style?.visibility === 'hidden') {
+                    return false;
+                }
+            } catch (error) {
+                // Ignore synthetic test nodes or detached elements that cannot be measured.
+            }
+        }
+
+        return true;
+    }
+
+    function getLdcstoreContentItems(root) {
+        const homeSections = collectElements(root, LDCSTORE_HOME_SECTION_SELECTOR);
+        if (homeSections.length > 0) {
+            return homeSections
+                .filter(isVisibleLdcstoreHomeSection)
+                .flatMap((section) => collectElements(section, LDCSTORE_ITEM_SELECTOR));
+        }
+
+        return collectElements(root, LDCSTORE_ITEM_SELECTOR);
+    }
+
+    const LDCSTORE_PROFILE = Object.freeze({
+        id: 'ldcstore',
+        entryFile: 'src/ldcstore.js',
+        distFile: LDCSTORE_DIST_USER_SCRIPT_RELATIVE_PATH,
         metadata: Object.freeze({
-            name: SCRIPT_NAME,
-            namespace: SCRIPT_NAMESPACE,
-            description: SCRIPT_DESCRIPTION,
-            version: SCRIPT_VERSION,
-            updateLog: SCRIPT_UPDATE_LOG,
-            matches: ['https://linux.do/*'],
-            icon: SCRIPT_ICON
+            name: LDCSTORE_SCRIPT_NAME,
+            namespace: LDCSTORE_SCRIPT_NAMESPACE,
+            description: LDCSTORE_SCRIPT_DESCRIPTION,
+            version: LDCSTORE_SCRIPT_VERSION,
+            updateLog: LDCSTORE_SCRIPT_UPDATE_LOG,
+            matches: ['https://ldcstore.com/*'],
+            icon: LDCSTORE_SCRIPT_ICON
         }),
-        storageKeys: STORAGE_KEYS,
-        menuRegisteredFlag: '__linuxDoTopicBlockerMenuRegistered',
-        exportFileName: 'linux_do_content_filter_settings.json',
+        storageKeys: LDCSTORE_STORAGE_KEYS,
+        menuRegisteredFlag: '__ldcstoreContentBlockerMenuRegistered',
+        exportFileName: 'ldcstore_content_filter_settings.json',
         features: Object.freeze({
-            summaryToggle: true,
-            searchUsesContentRules: false
+            summaryToggle: false,
+            searchUsesContentRules: true
         }),
         labels: Object.freeze({
             settingsTitle: '⚙️ 屏蔽设置',
@@ -5313,39 +5432,26 @@
             return location.pathname.includes('/search');
         },
         getObserverRoot() {
-            return document.querySelector('#main-outlet') || document.body;
+            return document.querySelector('#app .main-content') || document.querySelector('#app') || document.body;
         },
-        getContentItems(root) {
-            return collectElements(root, 'tr.topic-list-item');
-        },
-        getSearchItems(root) {
-            return collectElements(root, '.fps-result');
-        },
+        getContentItems: getLdcstoreContentItems,
+        getSearchItems: getLdcstoreSearchItems,
         getAllFilterItems(root) {
-            return collectElements(root, 'tr.topic-list-item, .fps-result');
+            return collectElements(root, LDCSTORE_ITEM_SELECTOR);
         },
-        getItemData: getLinuxDoItemData,
-        getSearchResultTitleElement(item) {
-            return item.querySelector('.topic-title');
+        getItemData: getLdcstoreItemData,
+        getSearchResultTitleElement() {
+            return null;
         },
         getBlockActionHost(item) {
-            if (!item) return null;
-            if (item.tagName === 'TR') {
-                return item.querySelector('td.main-link') || item.querySelector('td') || null;
-            }
-            return item;
+            return item || null;
         },
-        blockActionRelatedSelector: 'tr.topic-list-item, .fps-result',
-        shouldDeferBlockActionButton(item, settings) {
-            return Boolean(
-                settings?.summaryScriptEnabled &&
-                item?.tagName === 'TR' &&
-                item.classList.contains('topic-list-item') &&
-                !item.querySelector('.topic-summary-button')
-            );
+        blockActionRelatedSelector: LDCSTORE_ITEM_SELECTOR,
+        shouldDeferBlockActionButton() {
+            return false;
         }
     });
 
-    bootContentBlocker(LINUX_DO_PROFILE);
+    bootContentBlocker(LDCSTORE_PROFILE);
 
 })();
