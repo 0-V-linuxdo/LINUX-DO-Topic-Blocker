@@ -2,7 +2,7 @@
 
 这里是发布分支，放置可直接安装的最终 Userscript。
 
-如果你只是安装使用，请使用下面的 Raw 链接；完整开发源码在 [`dev` 分支](https://github.com/0-V-linuxdo/LINUX-DO-Topic-Blocker/tree/dev)。
+如果你只是安装使用，请使用下面的 Raw 链接；完整开发源码在 [dev 分支](https://github.com/0-V-linuxdo/LINUX-DO-Topic-Blocker/tree/dev)。
 
 ## LINUX DO 屏蔽脚本
 
