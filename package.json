@@ -1,0 +1,17 @@
+{
+  "name": "linux-do-topic-blocker",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -cw",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "rollup": "^4.0.0"
+  }
+}

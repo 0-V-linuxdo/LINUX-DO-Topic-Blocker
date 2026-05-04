@@ -1,79 +1,122 @@
-# [LINUX DO] 🚫 屏蔽含有指定：类别、标签和标题关键词 的话题
+# LINUX DO Topic Blocker
 
-在 `linux.do` 的话题列表与搜索结果中，按「类别 / 标签 / 标题关键词」自动隐藏不想看到的内容!
+`LINUX DO Topic Blocker` 是一组 Userscript 内容屏蔽脚本，用来在 `linux.do` 和 `ldcstore.com` 前端隐藏不想看到的话题、商品、小店、求购与热榜内容。
+
+项目当前开发文件放在 `dev` 分支；`dist/` 中的 `.user.js` 是可直接安装的构建产物。
+
+## 快速安装
+
+先安装脚本管理器，推荐使用 `Violentmonkey` 或 `Tampermonkey`。
+
+LINUX DO：
+
+1. 打开 [linux-do-topic-blocker.user.js](https://raw.githubusercontent.com/0-V-linuxdo/LINUX-DO-Topic-Blocker/dev/dist/linux-do-topic-blocker.user.js)。
+2. 在脚本管理器弹出的安装页中确认安装。
+3. 访问 `https://linux.do/`，脚本会自动生效。
+
+LD士多：
+
+1. 打开 [ldcstore-content-blocker.user.js](https://raw.githubusercontent.com/0-V-linuxdo/LINUX-DO-Topic-Blocker/dev/dist/ldcstore-content-blocker.user.js)。
+2. 在脚本管理器弹出的安装页中确认安装。
+3. 访问 `https://ldcstore.com/`，脚本会自动生效。
 
 ## 功能
 
-- 自定义屏蔽：标题关键词、类别、标签
-- 高级规则：支持为标题 / 类别 / 标签分别添加正则表达式
-- 搜索页适配：在搜索结果页提供可见的“屏蔽/必含/正则”过滤器（按搜索词分别保存）
-- 配置即时生效：保存后无需手动刷新
-- 未登录也可用：仅在前端隐藏，不依赖登录接口
-- 配置导入/导出：支持通过 JSON 文件同步全部设置
+- 按标题关键词、类别、标签隐藏 LINUX DO 话题列表内容。
+- 按名称关键词、分类或状态、卖家或标签隐藏 LD士多内容。
+- 支持为标题、类别、标签分别添加 JavaScript 正则规则。
+- 搜索页提供悬浮过滤器，支持“屏蔽 / 必含 / 正则”，并按搜索词分别保存。
+- 设置保存后即时生效，不需要手动刷新页面。
+- 支持配置导入和导出，便于跨浏览器或跨设备同步。
+- 仅做前端隐藏，不依赖登录接口，也不会删除站点原始内容。
+- 保留 `window.triggerContentFilter`，兼容外部总结脚本联动。
 
-## 安装
+## 使用说明
 
-1. 安装脚本管理器：(推荐) Violentmonkey。
-2. 在 GitHub 仓库中打开脚本文件 `[LINUX DO] 🚫 屏蔽含有指定：类别、标签和标题关键词 的话题.user.js`，点击 `Raw`，按提示安装。
-   - 或者：复制脚本内容，在脚本管理器中新建脚本并粘贴保存。
-3. 访问 `https://linux.do/`，脚本会自动生效。
+在脚本管理器菜单中打开 `⚙️ 屏蔽设置`。
 
-## 使用
+常规规则：
 
-### 1）话题列表页（非搜索页）
+- 标题关键词：逗号分隔，按包含匹配处理。
+- 类别：逗号分隔，按完全匹配处理。
+- 标签：逗号分隔，按完全匹配处理。
 
-在任意 `linux.do` 页面中，打开脚本菜单：
+高级正则：
 
-- 脚本管理器菜单 → `⚙️ 屏蔽设置`
+- 在标题、类别、标签各自的正则页中添加规则。
+- 输入 JavaScript 正则表达式主体，不需要写成 `/.../`。
+- 无效正则会提示错误；有效规则会保存并立即参与过滤。
 
-设置弹窗内包含三个主要维度：
+搜索页过滤：
 
-- **标题关键词**：逗号分隔；对标题做“包含匹配”（不区分大小写）。
-- **类别**：逗号分隔；对类别名做“完全匹配”（区分大小写，需与页面显示一致）。
-- **标签**：逗号分隔；对标签名做“完全匹配”（区分大小写，需与页面显示一致）。
+- 在 `https://linux.do/search?q=...` 和 LD士多搜索页中使用右上角悬浮过滤器。
+- `屏蔽` 表示黑名单关键词。
+- `必含` 表示白名单关键词，结果至少命中一个才会显示。
+- `正则` 表示每行一个 JavaScript 正则表达式。
 
-示例（逗号分隔）：
+## 配置导入导出
 
-- 标题关键词：`求助, 交易, 广告`
-- 类别：`灌水, 求助`
-- 标签：`openwrt, nas, docker`
+设置弹窗提供同步功能：
 
-### 2）高级自定义（正则表达式）
+- 导出：下载当前站点的 JSON 配置文件。
+- 导入：选择之前导出的 JSON 文件并覆盖当前配置。
 
-在“标题关键词 / 类别 / 标签”各自的 **高级自定义** 子页中，可新增多条正则规则：
+导出的配置包含 `schemaVersion`，核心结构如下：
 
-- 输入 **JavaScript 正则表达式**（不需要写成 `/.../`），例如：`^\\[求助\\]`
-- 规则校验通过后会自动保存并立即生效；无效正则会提示错误
+```json
+{
+  "schemaVersion": 1,
+  "blockedTitles": [],
+  "blockedCategories": [],
+  "blockedTags": [],
+  "titleRegexList": [],
+  "categoryRegexList": [],
+  "tagRegexList": [],
+  "searchFilterMap": {},
+  "summaryScriptEnabled": true
+}
+```
 
-提示：如果你希望“类别/标签”做到更灵活（例如忽略大小写/前后缀匹配），建议用正则实现。
+兼容说明：
 
-### 3）搜索结果页（/search）
+- 旧版本的 `blockedTtags` 会在读取或导入时迁移为 `blockedTags`。
+- 没有 `schemaVersion` 的旧备份仍可导入。
+- 新配置写回时只输出当前字段。
 
-在 `https://linux.do/search?q=...` 页面右上角会出现一个悬浮过滤器：
+## 开发
 
-- `屏蔽`：黑名单关键词（逗号分隔）
-- `必含`：白名单关键词（逗号分隔；结果需至少包含其中一个关键词，否则隐藏）
-- `正则`：正则表达式（每行一个；对结果文本进行匹配）
+要求：
 
-特性与交互：
+- Node.js `>= 18`
+- npm
 
-- 过滤器会按“当前搜索词”分别保存配置；更换搜索词后会自动切换到对应配置。
-- 点击字段进入编辑；失焦或按 `Ctrl/⌘ + Enter` 保存并立即生效。
+常用命令：
 
-## 配置导入/导出
+```sh
+npm install
+npm run dev
+npm run build
+npm test
+```
 
-在设置弹窗的 `同步` 页：
+说明：
 
-- **导出**：下载 `linux_do_content_filter_settings.json`
-- **导入**：选择之前导出的 JSON 文件，导入后会覆盖脚本的相关配置
+- `npm run dev` 使用 Rollup watch 模式持续构建。
+- `npm run build` 输出 `dist/linux-do-topic-blocker.user.js` 和 `dist/ldcstore-content-blocker.user.js`。
+- `npm test` 使用 Node.js 内置测试运行器。
+- `legacy/` 中的旧脚本是历史归档，不会被构建命令覆盖。
 
-## 常见问题
+## 项目结构
 
-### 为什么没生效？
+```text
+src/        源码，按核心逻辑、站点 profile、功能模块和平台适配拆分
+dist/       构建产物，也是正式安装入口
+test/       Node.js 测试
+legacy/     历史脚本归档
+reference/  参考脚本和素材
+scripts/    辅助脚本
+```
 
-- 确认脚本管理器中已启用该脚本，并且当前页面 URL 匹配 `https://linux.do/*`
-- 类别/标签属于“完全匹配”，请确保输入与页面显示的文字一致；不确定时用正则规则更稳妥
+## License
 
-### 如何清空所有屏蔽规则？
-
-- 在设置弹窗中清空对应输入框内容并保存；或在脚本管理器中删除脚本后重新安装
+MIT
