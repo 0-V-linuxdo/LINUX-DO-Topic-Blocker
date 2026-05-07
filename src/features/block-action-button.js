@@ -7,6 +7,61 @@ import {
     BLOCKED_ITEM_CLASS
 } from '../shared/constants.js';
 
+const SUMMARY_ACTION_BUTTON_SELECTOR = '.topic-question-button, .topic-summary-button';
+const SUMMARY_ACTION_BUTTON_GAP = 6;
+const VIEWPORT_EDGE_GAP = 6;
+
+function getVisibleElementRect(element) {
+    if (!element || typeof element.getBoundingClientRect !== 'function') return null;
+    const rect = element.getBoundingClientRect();
+    if (!rect || !rect.width || !rect.height) return null;
+    return rect;
+}
+
+export function getSummaryActionAnchorRect(item) {
+    const buttons = Array.from(item?.querySelectorAll?.(SUMMARY_ACTION_BUTTON_SELECTOR) || []);
+    return buttons.reduce((anchorRect, button) => {
+        const rect = getVisibleElementRect(button);
+        if (!rect) return anchorRect;
+        if (!anchorRect || rect.left < anchorRect.left) return rect;
+        return anchorRect;
+    }, null);
+}
+
+export function resolveBlockActionButtonPosition({
+    hostRect,
+    summaryActionAnchorRect = null,
+    viewportWidth,
+    viewportHeight,
+    buttonSize = BLOCK_ACTION_BUTTON_SIZE,
+    offsetTop = BLOCK_ACTION_BUTTON_OFFSET_TOP,
+    offsetRight = BLOCK_ACTION_BUTTON_OFFSET_RIGHT,
+    gap = SUMMARY_ACTION_BUTTON_GAP,
+    viewportEdgeGap = VIEWPORT_EDGE_GAP
+}) {
+    let top = hostRect.top + offsetTop;
+    let left = hostRect.right - offsetRight - buttonSize;
+
+    if (summaryActionAnchorRect?.width && summaryActionAnchorRect?.height) {
+        const candidateLeft = summaryActionAnchorRect.left - gap - buttonSize;
+        if (!Number.isNaN(candidateLeft)) {
+            left = Math.min(left, candidateLeft);
+        }
+        const candidateTop = summaryActionAnchorRect.top + (summaryActionAnchorRect.height - buttonSize) / 2;
+        if (!Number.isNaN(candidateTop)) {
+            top = candidateTop;
+        }
+    }
+
+    const maxLeft = Math.max(viewportEdgeGap, viewportWidth - buttonSize - viewportEdgeGap);
+    const maxTop = Math.max(viewportEdgeGap, viewportHeight - buttonSize - viewportEdgeGap);
+
+    return {
+        left: Math.round(Math.min(Math.max(left, viewportEdgeGap), maxLeft)),
+        top: Math.round(Math.min(Math.max(top, viewportEdgeGap), maxTop))
+    };
+}
+
 export function createBlockActionButtonController({
     runtime,
     store,
@@ -53,33 +108,15 @@ export function createBlockActionButtonController({
             return;
         }
 
-        let top = rect.top + BLOCK_ACTION_BUTTON_OFFSET_TOP;
-        let left = rect.right - BLOCK_ACTION_BUTTON_OFFSET_RIGHT - BLOCK_ACTION_BUTTON_SIZE;
+        const position = resolveBlockActionButtonPosition({
+            hostRect: rect,
+            summaryActionAnchorRect: getSummaryActionAnchorRect(item),
+            viewportWidth: window.innerWidth,
+            viewportHeight: window.innerHeight
+        });
 
-        const summaryButton = item.querySelector('.topic-summary-button');
-        if (summaryButton) {
-            const summaryRect = summaryButton.getBoundingClientRect();
-            if (summaryRect.width && summaryRect.height) {
-                const gap = 6;
-                const candidateLeft = summaryRect.left - gap - BLOCK_ACTION_BUTTON_SIZE;
-                if (!Number.isNaN(candidateLeft)) {
-                    left = Math.min(left, candidateLeft);
-                }
-                const candidateTop = summaryRect.top + (summaryRect.height - BLOCK_ACTION_BUTTON_SIZE) / 2;
-                if (!Number.isNaN(candidateTop)) {
-                    top = candidateTop;
-                }
-            }
-        }
-
-        const minEdge = 6;
-        const maxLeft = Math.max(minEdge, window.innerWidth - BLOCK_ACTION_BUTTON_SIZE - minEdge);
-        const maxTop = Math.max(minEdge, window.innerHeight - BLOCK_ACTION_BUTTON_SIZE - minEdge);
-        const clampedLeft = Math.min(Math.max(left, minEdge), maxLeft);
-        const clampedTop = Math.min(Math.max(top, minEdge), maxTop);
-
-        button.style.left = `${Math.round(clampedLeft)}px`;
-        button.style.top = `${Math.round(clampedTop)}px`;
+        button.style.left = `${position.left}px`;
+        button.style.top = `${position.top}px`;
     }
 
     function scheduleBlockActionButtonPositionUpdate() {
